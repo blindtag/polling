@@ -25,13 +25,12 @@ app.use('/poll', poll )
 //Port
 const port = 3000
 
-const server = app.listen(port, ()=> console.log(`Server statrted on port ${port}`))
+const server = app.listen(port, ()=> console.log(`Server started on port ${port}`))
 
 //Handle unhandled promise rejections
-process.on("unhandledRejection", (err, promise) => {
-    console.log(`Error: ${err.message}`.red);
-  
-    //close server and exit process
-    server.close(() => process.exit(1));
-  });
+// process.on("unhandledRejection", (err, promise) => {
+//     console.log(`Error: ${err.message}`.red);  
+//     //close server and exit process
+//     server.close(() => process.exit(1));
+//   });
   

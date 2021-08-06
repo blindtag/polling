@@ -8,7 +8,6 @@ var pusher = new Pusher({
     key :"12a4750b90a8d4561fc3",
     secret : "235a9352877300513a39",
     cluster:"eu",
-    useTLS: true
 });
 
 router.get('/', (req, res)=>{

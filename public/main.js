@@ -1,3 +1,4 @@
+
 const form = document.getElementById('vote-form')
 
 form.addEventListener('submit', (e)=>{
@@ -18,7 +19,7 @@ form.addEventListener('submit', (e)=>{
 });
 
 let dataPoints = [
-    {label: 'Windows', y:0},
+    {label: 'Windows', y:1},
     {label: 'Macos', y:0},
     {label: 'Linux', y:0},
     {label: 'Other', y:0},
@@ -40,23 +41,33 @@ if(chartContainer){
         ]
     })
     chart.render()
-    // Enable pusher logging - don't include this in production
+    // // Enable pusher logging - don't include this in production
     Pusher.logToConsole = true;
+    console.log('1222')
+    // var pusher = new Pusher('12a4750b90a8d4561fc3', {
+    //   cluster: 'eu',
+    // });
 
-    var pusher = new Pusher('12a4750b90a8d4561fc3', {
-      cluster: 'eu'
-    });
+    // console.log('1222')
+    
+    // var channel = pusher.subscribe('os-poll');
+    // console.log('1222')
 
-    var channel = pusher.subscribe('os-poll');
+    var pusher = new Pusher('12a4750b90a8d4561fc3',{ cluster: 'eu'})
+    var channel = pusher.subscribe('os-poll')
     channel.bind('os-vote', function(data) {
+        console.log('1222')
       dataPoints = dataPoints.map(x=>{
           if(x.label == data.os){
+              console.log('egba')
               x.y += data.points;
               return x
           }else{
+            console.log('egba')
               return x
           }
-      })
-      chart.render()
+      });
+      chart.render() 
     });
+    //end bind
 }
