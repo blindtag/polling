@@ -16,6 +16,7 @@ router.get('/', (req, res)=>{
 
 router.post('/', (req, res)=>{
     pusher.trigger('os-poll', '0s-vote', {
+        message:"hello world",
         points: 1,
         os: req.body.os
     })

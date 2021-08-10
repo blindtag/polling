@@ -9,9 +9,9 @@ form.addEventListener('submit', (e)=>{
     fetch('http://localhost:3000/poll', {
         method:  'POST',
         body: JSON.stringify(data),
-        headers:{
+        headers: new Headers({
             'Content-Type': 'application/json'
-        }
+        })
     }).then(res => res.json())
     .then(data => console.log(data))
     .catch(err => console.log(err))
@@ -53,21 +53,34 @@ if(chartContainer){
     // var channel = pusher.subscribe('os-poll');
     // console.log('1222')
 
-    var pusher = new Pusher('12a4750b90a8d4561fc3',{ cluster: 'eu'})
+    var pusher = new Pusher('12a4750b90a8d4561fc3',{cluster: 'eu', forceTLS : true})
     var channel = pusher.subscribe('os-poll')
-    channel.bind('os-vote', function(data) {
-        console.log('1222')
+    channel.bind('pusher:subscription_succeeded', function(data) {
+        console.log('mapp')
+        console.log(data)
       dataPoints = dataPoints.map(x=>{
           if(x.label == data.os){
-              console.log('egba')
               x.y += data.points;
               return x
           }else{
-            console.log('egba')
               return x
           }
       });
-      chart.render() 
+      console.log('egba')
+      const chart = new CanvasJS.Chart('chartContainer', {
+        animationEnabled: true,
+        theme: 'theme1',
+        title:{
+            text: 'OS Results'
+        },
+        data:[
+            {
+                type: 'column',
+                dataPoints: dataPoints
+            }
+        ]
+    })
+    chart.render()
     });
     //end bind
 }
