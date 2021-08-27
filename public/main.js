@@ -27,7 +27,7 @@ let dataPoints = [
 const chartContainer = document.querySelector('#chartContainer')
 
 if(chartContainer){
-    const chart = new CanvasJS.Chart('chartContainer', {
+    let chart = new CanvasJS.Chart('chartContainer', {
         animationEnabled: true,
         theme: 'theme1',
         title:{
@@ -43,44 +43,27 @@ if(chartContainer){
     chart.render()
     // // Enable pusher logging - don't include this in production
     Pusher.logToConsole = true;
-    console.log('1222')
-    // var pusher = new Pusher('12a4750b90a8d4561fc3', {
-    //   cluster: 'eu',
-    // });
-
-    // console.log('1222')
-    
-    // var channel = pusher.subscribe('os-poll');
-    // console.log('1222')
 
     var pusher = new Pusher('12a4750b90a8d4561fc3',{cluster: 'eu', forceTLS : true})
     var channel = pusher.subscribe('os-poll')
     channel.bind('pusher:subscription_succeeded', function(data) {
-        console.log('mapp')
+        console.log('data')
         console.log(data)
+
       dataPoints = dataPoints.map(x=>{
           if(x.label == data.os){
-              x.y += data.points;
+              console.log('datapoints')
+              console.log(data.dataPoints)
+              x.y += data.dataPoints;
+              chart.render()
               return x
           }else{
               return x
           }
       });
-      console.log('egba')
-      const chart = new CanvasJS.Chart('chartContainer', {
-        animationEnabled: true,
-        theme: 'theme1',
-        title:{
-            text: 'OS Results'
-        },
-        data:[
-            {
-                type: 'column',
-                dataPoints: dataPoints
-            }
-        ]
-    })
-    chart.render()
+      if(chart){
+          chart.render()
+      }
     });
     //end bind
 }
